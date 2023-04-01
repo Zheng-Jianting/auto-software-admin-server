@@ -11,6 +11,7 @@
 
     <modules>
         <module>login-mgmt</module>
+        <module>user-mgmt</module>
     </modules>
 
     <properties>
