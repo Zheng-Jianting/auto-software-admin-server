@@ -12,6 +12,7 @@
     <modules>
         <module>login-mgmt</module>
         <module>user-mgmt</module>
+        <module>project-mgmt</module>
     </modules>
 
     <properties>

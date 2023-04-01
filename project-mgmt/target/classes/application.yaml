@@ -1,0 +1,19 @@
+server:
+  port: 8003
+
+spring:
+  application:
+    name: project-mgmt
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auto_software_admin?currentSchema=user_mgmt # get username from user_mgmt.user_t by user_id
+    username: root
+    password: zjt010526_T
+    driver-class-name: org.postgresql.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/auto_software
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
