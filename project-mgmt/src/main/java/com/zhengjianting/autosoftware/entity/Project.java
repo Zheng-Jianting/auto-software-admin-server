@@ -30,8 +30,7 @@ public class Project implements Serializable {
      *     }
      */
     private List<JSONObject> mindMap;
-    @Field("usercaseDiagram")
-    private List<JSONObject> useCaseDiagram;
+    private List<JSONObject> usercaseDiagram;
     private List<JSONObject> activityDiagram;
     private List<JSONObject> erDiagram;
     private List<JSONObject> uiDiagram;

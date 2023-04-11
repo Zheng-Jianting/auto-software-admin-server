@@ -83,8 +83,8 @@ public class ProjectController {
             case "mindMap":
                 records = project.getMindMap();
                 break;
-            case "useCaseDiagram":
-                records = project.getUseCaseDiagram();
+            case "usercaseDiagram":
+                records = project.getUsercaseDiagram();
                 break;
             case "activityDiagram":
                 records = project.getActivityDiagram();
