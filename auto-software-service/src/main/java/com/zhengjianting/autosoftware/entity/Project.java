@@ -17,7 +17,7 @@ import java.util.List;
 @Document(collection = "user_project")
 public class Project implements Serializable {
     @Id
-    private String id;
+    private String key;
     private String userId;
     private String projectName;
     private String fromModule;
