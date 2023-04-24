@@ -15,6 +15,7 @@
         <module>project-mgmt</module>
         <module>statistics-mgmt</module>
         <module>auto-software-service</module>
+        <module>admin-common</module>
     </modules>
 
     <properties>

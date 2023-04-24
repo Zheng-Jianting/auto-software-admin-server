@@ -1,0 +1,22 @@
+server:
+  port: 8005
+
+spring:
+  application:
+    name: admin-common
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auto_software_admin
+    username: root
+    password: zjt010526_T
+    driver-class-name: org.postgresql.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+
+auto-software-admin:
+  jwt:
+    header: Authorization
+    expire: 604800
+    secret: ji8n3439n439n43ld9ne9343fdfer49h
