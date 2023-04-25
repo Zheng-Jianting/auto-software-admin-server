@@ -31,7 +31,15 @@ public class UserService extends ServiceImpl<UserMapper, User> implements UserSe
 
     @Override
     public User getByUsername(String username) {
-        return getOne(new QueryWrapper<User>().eq("delete_flag", "N").eq("username", username));
+        User user = getOne(new QueryWrapper<User>().eq("delete_flag", "N").eq("username", username));
+        List<Role> roles = roleService.list(new QueryWrapper<Role>().eq("delete_flag", "N").inSql("id", "select role_id from user_mgmt.user_role_t where delete_flag = 'N' and user_id = " + user.getId()));
+        List<String> roleCodes = roles.stream().map(Role::getRoleCode).collect(Collectors.toList());
+
+        if (roleCodes.contains("admin") || roleCodes.contains("super-admin")) {
+            return user;
+        }
+
+        return null;
     }
 
     @Override
