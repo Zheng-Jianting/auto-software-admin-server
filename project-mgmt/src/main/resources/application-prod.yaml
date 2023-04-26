@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/auto_software_admin?currentSchema=user_mgmt # get username from user_mgmt.user_t by user_id
+    username: root
+    password:
+    driver-class-name: org.postgresql.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/auto_software
