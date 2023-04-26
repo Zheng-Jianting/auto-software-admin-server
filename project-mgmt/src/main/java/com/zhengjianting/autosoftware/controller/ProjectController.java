@@ -12,12 +12,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -69,6 +74,25 @@ public class ProjectController {
         project.setUpdated(DateUtil.now());
         projectRepository.save(project);
         return new Result(200, "update project which id = " + project.getId() + " successfully");
+    }
+
+    @GetMapping("/api/project/{id}/download")
+    public ResponseEntity<byte[]> downloadProject(@PathVariable("id") String id) {
+        Project project = projectRepository.findById(id).orElse(null);
+        byte[] bytes = JSONUtil.parseObj(project, false).toStringPretty().getBytes(StandardCharsets.UTF_8);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", Objects.requireNonNull(project).getProjectName()) + ".txt");
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentLength(bytes.length)
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(bytes);
     }
 
     @DeleteMapping("/api/project/{id}")
