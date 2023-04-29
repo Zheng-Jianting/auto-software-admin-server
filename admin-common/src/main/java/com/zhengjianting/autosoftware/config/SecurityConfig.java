@@ -18,7 +18,7 @@ import javax.annotation.Resource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String[] URL_WHITELIST = { "/login", "/logout", "/test/*" };
+    private static final String[] URL_WHITELIST = { "/login", "/logout", "/test/*", "/actuator/**" };
 
     @Resource
     private LoginSuccessHandler loginSuccessHandler;

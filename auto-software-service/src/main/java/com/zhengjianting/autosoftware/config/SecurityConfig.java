@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 @EnableGlobalMethodSecurity(prePostEnabled = true) // 进入方法都需要进行权限检验
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String[] URL_WHITELIST = { "/login", "/logout", "/captchaImage", "/user/saveNormal", "/thirdInterface/*", "/test/*" };
+    private static final String[] URL_WHITELIST = { "/login", "/logout", "/captchaImage", "/user/saveNormal", "/thirdInterface/*", "/test/*", "/actuator/**" };
 
     @Resource
     private LoginSuccessHandler loginSuccessHandler;

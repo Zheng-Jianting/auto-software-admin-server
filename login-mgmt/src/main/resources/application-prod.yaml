@@ -1,4 +1,11 @@
 spring:
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
+        instance-id: ${spring.cloud.client.hostname}:${server.port}
   datasource:
     url: jdbc:postgresql://localhost:5432/auto_software_admin?currentSchema=login_mgmt
     username: root

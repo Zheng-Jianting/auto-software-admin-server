@@ -16,13 +16,15 @@
         <module>statistics-mgmt</module>
         <module>auto-software-service</module>
         <module>admin-common</module>
+        <module>cloud-gateway</module>
     </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <spring-boot.version>2.7.9</spring-boot.version>
+        <spring-boot.version>2.6.14</spring-boot.version>
+        <spring-cloud.version>2021.0.6</spring-cloud.version>
         <postgresql.version>42.5.0</postgresql.version>
         <druid.version>1.2.15</druid.version>
         <mybatis-plus.version>3.5.2</mybatis-plus.version>
@@ -32,6 +34,14 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>

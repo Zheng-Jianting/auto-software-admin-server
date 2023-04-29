@@ -6,8 +6,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-public class LoginMgmtApplication {
+public class CloudGatewayApplication {
     public static void main(String[] args) {
-        SpringApplication.run(LoginMgmtApplication.class, args);
+        SpringApplication.run(CloudGatewayApplication.class, args);
     }
 }

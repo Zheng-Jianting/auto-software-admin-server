@@ -1,0 +1,60 @@
+spring:
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
+        instance-id: ${spring.cloud.client.hostname}:${server.port}
+
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            exposedHeaders: "Authorization"
+            allowed-origins: "*"
+            allowed-headers: "*"
+            allowed-methods: "*"
+
+      routes:
+        - id: auto-software-service
+          uri: lb://auto-software-service
+          predicates:
+            - Path=/auto-software-service/**
+          filters:
+            - RewritePath=/auto-software-service(?<segment>/?.*), $\{segment}
+
+        - id: login-mgmt
+          uri: lb://login-mgmt
+          predicates:
+            - Path=/login-mgmt/**
+          filters:
+            - RewritePath=/login-mgmt(?<segment>/?.*), $\{segment}
+
+        - id: user-mgmt
+          uri: lb://user-mgmt
+          predicates:
+            - Path=/user-mgmt/**
+          filters:
+            - RewritePath=/user-mgmt(?<segment>/?.*), $\{segment}
+
+        - id: project-mgmt
+          uri: lb://project-mgmt
+          predicates:
+            - Path=/project-mgmt/**
+          filters:
+            - RewritePath=/project-mgmt(?<segment>/?.*), $\{segment}
+
+        - id: statistics-mgmt
+          uri: lb://statistics-mgmt
+          predicates:
+            - Path=/statistics-mgmt/**
+          filters:
+            - RewritePath=/statistics-mgmt(?<segment>/?.*), $\{segment}
+
+        - id: admin-common
+          uri: lb://admin-common
+          predicates:
+            - Path=/admin-common/**
+          filters:
+            - RewritePath=/admin-common(?<segment>/?.*), $\{segment}
