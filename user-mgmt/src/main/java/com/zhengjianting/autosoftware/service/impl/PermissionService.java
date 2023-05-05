@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PermissionService extends ServiceImpl<PermissionMapper, Permission> implements PermissionServiceI {
@@ -32,5 +33,13 @@ public class PermissionService extends ServiceImpl<PermissionMapper, Permission>
     public FlatPermissionTree getFlatPermissionTree() {
         initPermissionTreeMetaData();
         return FlatPermissionTree.buildPermissionFlatTree(root, permissions);
+    }
+
+    @Override
+    public List<Long> getNonLeafPermissionIdList() {
+        List<Permission> nonLeafPermissions = list(new QueryWrapper<Permission>().eq("delete_flag", "N").eq("is_permission", "N").orderByAsc("id"));
+        List<Long> nonLeafPermissionIdList = nonLeafPermissions.stream().mapToLong(Permission::getId).boxed().collect(Collectors.toList());
+        nonLeafPermissionIdList.add(0, 0L);
+        return nonLeafPermissionIdList;
     }
 }

@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zhengjianting.autosoftware.common.Result;
-import com.zhengjianting.autosoftware.entity.Permission;
 import com.zhengjianting.autosoftware.entity.Role;
 import com.zhengjianting.autosoftware.entity.RolePermission;
 import com.zhengjianting.autosoftware.entity.UserRole;
@@ -39,6 +38,39 @@ public class RoleController {
     @Resource
     private RolePermissionService rolePermissionService;
 
+    @GetMapping("/api/role/create")
+    public Result getCreateRoleDialogInfo() {
+        FlatPermissionTree flatPermissionTree = permissionService.getFlatPermissionTree();
+        List<Long> expandedKeys = permissionService.getNonLeafPermissionIdList();
+
+        JSONObject data = new JSONObject();
+        data.set("flatPermissionTree", flatPermissionTree);
+        data.set("expandedKeys", expandedKeys);
+
+        return new Result(200, "get create role dialog info successfully", data);
+    }
+
+    @PostMapping("/api/role/create")
+    public Result createRole(@RequestBody JSONObject params) {
+        if (!params.containsKey("role") || !params.containsKey("checkedKeys")) {
+            return new Result(400, "role and checkedKeys parameter is necessary");
+        }
+
+        Role role = params.getBean("role", Role.class);
+        roleService.save(role);
+
+        List<Long> permissionIdList = params.getJSONArray("checkedKeys").toList(Long.class);
+        List<RolePermission> rolePermissions = permissionIdList.stream().map(i -> {
+            RolePermission rolePermission = new RolePermission();
+            rolePermission.setRoleId(role.getId());
+            rolePermission.setPermissionId(i);
+            return rolePermission;
+        }).collect(Collectors.toList());
+        rolePermissionService.saveBatch(rolePermissions);
+
+        return new Result(200, "create role successfully");
+    }
+
     @GetMapping("/api/role")
     public Result pageRole(@RequestParam("page-index") Integer pageIndex, @RequestParam("page-size") Integer pageSize) {
         Page<Role> rolePage = roleService.page(new Page<>(pageIndex, pageSize), new QueryWrapper<Role>().eq("delete_flag", "N").orderByAsc("id"));
@@ -68,9 +100,7 @@ public class RoleController {
         Role role = roleService.getById(id);
         FlatPermissionTree flatPermissionTree = permissionService.getFlatPermissionTree();
 
-        List<Permission> expandedPermissions = permissionService.list(new QueryWrapper<Permission>().eq("delete_flag", "N").eq("is_permission", "N").orderByAsc("id"));
-        List<Long> expandedKeys = expandedPermissions.stream().mapToLong(Permission::getId).boxed().collect(Collectors.toList());
-        expandedKeys.add(0, 0L);
+        List<Long> expandedKeys = permissionService.getNonLeafPermissionIdList();
 
         List<RolePermission> checkedRolePermissions = rolePermissionService.list(new QueryWrapper<RolePermission>().eq("delete_flag", "N").eq("role_id", id).orderByAsc("id"));
         List<Long> checkedKeys = checkedRolePermissions.stream().mapToLong(RolePermission::getPermissionId).boxed().collect(Collectors.toList());
